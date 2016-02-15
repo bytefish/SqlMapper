@@ -101,7 +101,6 @@ public class StreamingMapperTest extends TransactionalTestBase {
         Assert.assertEquals(10000, result.size());
     }
 
-
     private boolean createTable() throws SQLException {
 
         String sqlStatement = "CREATE TABLE sample.unit_test\n" +
