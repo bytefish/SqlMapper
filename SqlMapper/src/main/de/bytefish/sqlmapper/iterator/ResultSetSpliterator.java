@@ -3,23 +3,30 @@
 
 package de.bytefish.sqlmapper.iterator;
 
+import de.bytefish.sqlmapper.SqlMapper;
+import de.bytefish.sqlmapper.result.SqlMappingResult;
+
 import java.sql.ResultSet;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 
-public class ResultSetSpliterator extends Spliterators.AbstractSpliterator<ResultSet> {
+public class ResultSetSpliterator<TEntity> extends Spliterators.AbstractSpliterator<SqlMappingResult<TEntity>> {
 
-    private final ResultSet rs;
+    private final ResultSet resultSet;
+    private final SqlMapper<TEntity> sqlMapper;
 
-    public ResultSetSpliterator(ResultSet rs) {
+    public ResultSetSpliterator(final SqlMapper<TEntity> sqlMapper, final ResultSet resultSet) {
         super(Long.MAX_VALUE,Spliterator.ORDERED);
-        this.rs = rs;
+
+        this.sqlMapper = sqlMapper;
+        this.resultSet = resultSet;
     }
 
-    @Override public boolean tryAdvance(Consumer<? super ResultSet> action) {
+    @Override
+    public boolean tryAdvance(Consumer<? super SqlMappingResult<TEntity>> action) {
         if (next()) {
-            action.accept(rs);
+            action.accept(sqlMapper.toEntity(resultSet));
             return true;
         } else {
             return false;
@@ -28,11 +35,9 @@ public class ResultSetSpliterator extends Spliterators.AbstractSpliterator<Resul
 
     private boolean next() {
         try {
-            rs.next();
+            return resultSet.next();
         } catch (Exception e) {
-            // TODO Throw Exception or simply return false?
             throw new RuntimeException(e);
         }
-        return true;
     }
 }
