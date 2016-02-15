@@ -12,6 +12,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class StreamingMapperTest extends TransactionalTestBase {
@@ -89,16 +90,20 @@ public class StreamingMapperTest extends TransactionalTestBase {
 
     @Test
     public void testToEntityStream() throws Exception {
-
-        SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
-
-        insert(10000);
-
+        // Number of persons to insert:
+        int numPersons = 10000;
+        // Insert the given number of persons:
+        insert(numPersons);
+        // Get all row of the Table:
         ResultSet resultSet = selectAll();
-
-        List<SqlMappingResult<Person>> result = StreamSupport.stream(new ResultSetSpliterator<>(sqlMapper, resultSet), false).collect(Collectors.toList());
-
-        Assert.assertEquals(10000, result.size());
+        // Create a SqlMapper, which maps between a ResultSet row and a Person entity:
+        SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
+        // Create the Stream using the StreamSupport class:
+        Stream<SqlMappingResult<Person>> stream = StreamSupport.stream(new ResultSetSpliterator<>(sqlMapper, resultSet), false);
+        // Collect the Results as a List:
+        List<SqlMappingResult<Person>> result = stream.collect(Collectors.toList());
+        // Assert the results:
+        Assert.assertEquals(numPersons, result.size());
     }
 
     private boolean createTable() throws SQLException {
