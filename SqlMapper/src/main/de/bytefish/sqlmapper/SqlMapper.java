@@ -11,7 +11,7 @@ import de.bytefish.sqlmapper.result.SqlMappingResult;
 import java.sql.ResultSet;
 
 public final class SqlMapper<TEntity> {
-
+    
     private final IObjectCreator<TEntity> creator;
     private final AbstractMap<TEntity> mapping;
 
@@ -27,10 +27,10 @@ public final class SqlMapper<TEntity> {
             try {
                 propertyMapping.map(entity, resultSet);
             } catch(Exception e) {
-                return new SqlMappingResult<TEntity>(new SqlMappingError(e));
+                return new SqlMappingResult<>(new SqlMappingError(e));
             }
         }
 
-        return new SqlMappingResult<TEntity>(entity);
+        return new SqlMappingResult<>(entity);
     }
 }

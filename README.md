@@ -4,10 +4,26 @@
 [NPoco]: https://github.com/schotime/NPoco/
 [Dapper]: https://github.com/StackExchange/dapper-dot-net
 [OrmLite]: https://github.com/ServiceStack/ServiceStack.OrmLite
+[SqlMapper]: https://github.com/bytefish/SqlMapper
+
 
 .NET has a large amount of Micro ORMs ([Dapper], [NPoco], [OrmLite], ...) to access databases in a very 
 simple way, while Java is lacking small libraries. SqlMapper is a tiny wrapper over the Java ``ResultSet``, 
 that makes it very easy to map betweem Java Beans and a database table.
+
+## Setup ##
+
+[SqlMapper] is available in the Central Maven Repository. 
+
+You can add the following dependencies to your pom.xml to include [SqlMapper] in your project.
+
+```xml
+<dependency>
+	<groupId>de.bytefish</groupId>
+	<artifactId>sqlmapper</artifactId>
+	<version>0.1</version>
+</dependency>
+```
 
 ## Basic Usage ##
 
