@@ -9,7 +9,7 @@
 
 .NET has a large amount of Micro ORMs ([Dapper], [NPoco], [OrmLite], ...) to access databases in a very 
 simple way, while Java is lacking small libraries. SqlMapper is a tiny wrapper over the Java ``ResultSet``, 
-that makes it very easy to map betweem Java Beans and a database table.
+that makes it very easy to map between Java Beans and a database table.
 
 ## Setup ##
 
