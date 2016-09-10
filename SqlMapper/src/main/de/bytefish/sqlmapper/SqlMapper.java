@@ -4,11 +4,14 @@
 package de.bytefish.sqlmapper;
 
 import de.bytefish.sqlmapper.functional.IObjectCreator;
+import de.bytefish.sqlmapper.iterator.ResultSetSpliterator;
 import de.bytefish.sqlmapper.mapping.IPropertyMapping;
 import de.bytefish.sqlmapper.result.SqlMappingError;
 import de.bytefish.sqlmapper.result.SqlMappingResult;
 
 import java.sql.ResultSet;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public final class SqlMapper<TEntity> {
     
@@ -27,10 +30,14 @@ public final class SqlMapper<TEntity> {
             try {
                 propertyMapping.map(entity, resultSet);
             } catch(Exception e) {
-                return new SqlMappingResult<>(new SqlMappingError(e));
+                return new SqlMappingResult<TEntity>(new SqlMappingError(e));
             }
         }
 
-        return new SqlMappingResult<>(entity);
+        return new SqlMappingResult<TEntity>(entity);
+    }
+
+    public Stream<SqlMappingResult<TEntity>> toStream(ResultSet resultSet) {
+        return StreamSupport.stream(new ResultSetSpliterator<>(this, resultSet), false);
     }
 }

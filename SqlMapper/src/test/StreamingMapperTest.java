@@ -82,9 +82,9 @@ public class StreamingMapperTest extends TransactionalTestBase {
 
             Assert.assertEquals(true, person.isValid());
 
-            Assert.assertEquals("Philipp", person.getEntity().get().getFirstName());
-            Assert.assertEquals("Wagner", person.getEntity().get().getLastName());
-            Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getEntity().get().getBirthDate());
+            Assert.assertEquals("Philipp", person.getResult().getFirstName());
+            Assert.assertEquals("Wagner", person.getResult().getLastName());
+            Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getResult().getBirthDate());
         }
     }
 
@@ -99,7 +99,7 @@ public class StreamingMapperTest extends TransactionalTestBase {
         // Create a SqlMapper, which maps between a ResultSet row and a Person entity:
         SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
         // Create the Stream using the StreamSupport class:
-        Stream<SqlMappingResult<Person>> stream = StreamSupport.stream(new ResultSetSpliterator<>(sqlMapper, resultSet), false);
+        Stream<SqlMappingResult<Person>> stream = sqlMapper.toStream(resultSet);
         // Collect the Results as a List:
         List<SqlMappingResult<Person>> result = stream.collect(Collectors.toList());
         // Assert the results:

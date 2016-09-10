@@ -6,7 +6,6 @@ package de.bytefish.sqlmapper;
 import de.bytefish.sqlmapper.result.SqlMappingResult;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.Result;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -84,9 +83,9 @@ public class SqlMapperTest extends TransactionalTestBase {
 
             Assert.assertEquals(true, person.isValid());
 
-            Assert.assertEquals("Philipp", person.getEntity().get().getFirstName());
-            Assert.assertEquals("Wagner", person.getEntity().get().getLastName());
-            Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getEntity().get().getBirthDate());
+            Assert.assertEquals("Philipp", person.getResult().getFirstName());
+            Assert.assertEquals("Wagner", person.getResult().getLastName());
+            Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getResult().getBirthDate());
         }
     }
 

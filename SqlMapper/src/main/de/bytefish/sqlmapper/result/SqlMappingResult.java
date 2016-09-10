@@ -3,32 +3,31 @@
 
 package de.bytefish.sqlmapper.result;
 
-import java.util.Optional;
-
 public class SqlMappingResult<TEntity> {
 
-    private Optional<TEntity> entity;
-    private Optional<SqlMappingError> error;
+    private final TEntity entity;
+    private final SqlMappingError error;
 
     public SqlMappingResult(TEntity entity) {
-        this.entity = Optional.of(entity);
-        this.error = Optional.empty();
+        this.entity = entity;
+        this.error = null;
     }
 
     public SqlMappingResult(SqlMappingError error) {
-        this.error = Optional.of(error);
-        this.entity = Optional.empty();
+        this.entity = null;
+        this.error = error;
     }
 
-    public Optional<TEntity> getEntity() {
+    public TEntity getResult() {
         return entity;
     }
 
-    public Optional<SqlMappingError> getError() {
+    public SqlMappingError getError() {
         return error;
     }
 
     public boolean isValid() {
-        return !error.isPresent();
+        return error == null;
     }
+
 }
