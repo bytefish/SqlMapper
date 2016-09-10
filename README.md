@@ -106,6 +106,7 @@ the result set.
 
 #### Stream the ResultSet ####
 
+```java
 @Test
 public void testToEntityStream() throws Exception {
     // Create a SqlMapper, which maps between a ResultSet row and a Person entity:
@@ -129,8 +130,7 @@ public void testToEntityStream() throws Exception {
     // Assert the results:
     Assert.assertEquals(numPersons, result.size());
 }
-
-
+```
 
 #### Iterate the ResultSet ####
 
