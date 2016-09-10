@@ -21,7 +21,7 @@ You can add the following dependencies to your pom.xml to include [SqlMapper] in
 <dependency>
 	<groupId>de.bytefish</groupId>
 	<artifactId>sqlmapper</artifactId>
-	<version>0.1</version>
+	<version>0.2</version>
 </dependency>
 ```
 
@@ -100,9 +100,41 @@ public class PersonMap extends AbstractMap<Person>
 
 ### Map ResultSet ###
 
-Which we can then use to build an ``SqlMapper`` and map a ResultSet of a Query. The 
-``SqlMapper.toEntity`` method returns a ``SqlMappingResult<TEntity>``, because no 
-exception should be thrown during parsing the result set.
+An ``SqlMapper`` is used to map a SQL ``ResultSet`` to Java objects. The ``SqlMapper.toEntity`` 
+method returns a ``SqlMappingResult<TEntity>``, because no exception should be thrown during parsing 
+the result set.
+
+#### Stream the ResultSet ####
+
+@Test
+public void testToEntityStream() throws Exception {
+    // Create a SqlMapper, which maps between a ResultSet row and a Person entity:
+    SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
+    
+    // Number of persons to insert:
+    int numPersons = 10000;
+    
+    // Insert the given number of persons:
+    insert(numPersons);
+    
+    // Get all row of the Table:
+    ResultSet resultSet = selectAll();
+        
+    // Create the Stream:
+    Stream<SqlMappingResult<Person>> stream = sqlMapper.toStream(resultSet);
+    
+    // Collect the Results as a List:
+    List<SqlMappingResult<Person>> result = stream.collect(Collectors.toList());
+    
+    // Assert the results:
+    Assert.assertEquals(numPersons, result.size());
+}
+
+
+
+#### Iterate the ResultSet ####
+
+Of course it is possible to iterate the ``ResultSet`` and map the rows into Java Objects.
 
 ```java
 @Test
@@ -125,9 +157,9 @@ public void testToEntity() throws Exception {
 
         Assert.assertEquals(true, person.isValid());
 
-        Assert.assertEquals("Philipp", person.getEntity().get().getFirstName());
-        Assert.assertEquals("Wagner", person.getEntity().get().getLastName());
-        Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getEntity().get().getBirthDate());
+        Assert.assertEquals("Philipp", person.getEntity().getFirstName());
+        Assert.assertEquals("Wagner", person.getEntity().getLastName());
+        Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getEntity().getBirthDate());
     }
 }
 ```

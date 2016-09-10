@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Basic Project Information -->
+    <groupId>de.bytefish</groupId>
+    <artifactId>sqlmapper</artifactId>
+    <version>0.2</version>
+    <packaging>jar</packaging>
+    <name>sqlmapper</name>
+    <description>A small wrapper over the Java ResultSet, that makes it very easy to map betweem Java Beans and a database table.</description>
+    <url>http://www.github.com/bytefish/SqlMapper</url>
+
+    <!-- Define the License -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/bytefish/SqlMapper</url>
+        <connection>scm:git:git://github.com/bytefish/SqlMapper.git</connection>
+        <developerConnection>scm:git:git@github.com:bytefish/SqlMapper.git</developerConnection>
+    </scm>
+    <!-- Developers -->
+    <developers>
+        <developer>
+            <email>bytefish@gmx.de</email>
+            <name>Philipp Wagner</name>
+            <url>http://www.bytefish.de</url>
+            <id>bytefish</id>
+        </developer>
+    </developers>
+
+    <!-- Dependencies -->
+    <dependencies>
+    </dependencies>
+
+</project>
