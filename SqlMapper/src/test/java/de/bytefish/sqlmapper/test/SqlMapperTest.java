@@ -3,7 +3,7 @@
 
 package de.bytefish.sqlmapper.test;
 
-import de.bytefish.sqlmapper.AbstractMap;
+import de.bytefish.sqlmapper.ResultSetMapping;
 import de.bytefish.sqlmapper.SqlMapper;
 import de.bytefish.sqlmapper.result.SqlMappingResult;
 import org.junit.Assert;
@@ -49,10 +49,10 @@ public class SqlMapperTest extends TransactionalTestBase {
         }
     }
 
-    public class PersonMap extends AbstractMap<Person>
+    public class PersonMap extends ResultSetMapping<Person>
     {
         public PersonMap() {
-            super("sample", "unit_test");
+            super();
 
             map("first_name", String.class, Person::setFirstName);
             map("last_name", String.class, Person::setLastName);

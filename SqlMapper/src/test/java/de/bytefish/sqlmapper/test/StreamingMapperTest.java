@@ -3,9 +3,8 @@
 
 package de.bytefish.sqlmapper.test;
 
-import de.bytefish.sqlmapper.AbstractMap;
+import de.bytefish.sqlmapper.ResultSetMapping;
 import de.bytefish.sqlmapper.SqlMapper;
-import de.bytefish.sqlmapper.iterator.ResultSetSpliterator;
 import de.bytefish.sqlmapper.result.SqlMappingResult;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class StreamingMapperTest extends TransactionalTestBase {
 
@@ -54,11 +52,9 @@ public class StreamingMapperTest extends TransactionalTestBase {
         }
     }
 
-    public class PersonMap extends AbstractMap<Person>
+    public class PersonMap extends ResultSetMapping<Person>
     {
         public PersonMap() {
-            super("sample", "unit_test");
-
             map("first_name", String.class, Person::setFirstName);
             map("last_name", String.class, Person::setLastName);
             map("birth_date", LocalDate.class, Person::setBirthDate);

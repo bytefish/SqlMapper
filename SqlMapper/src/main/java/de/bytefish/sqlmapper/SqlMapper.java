@@ -16,9 +16,9 @@ import java.util.stream.StreamSupport;
 public final class SqlMapper<TEntity> {
     
     private final IObjectCreator<TEntity> creator;
-    private final AbstractMap<TEntity> mapping;
+    private final ResultSetMapping<TEntity> mapping;
 
-    public SqlMapper(IObjectCreator<TEntity> creator, AbstractMap mapping) {
+    public SqlMapper(IObjectCreator<TEntity> creator, ResultSetMapping mapping) {
         this.creator = creator;
         this.mapping = mapping;
     }
@@ -30,11 +30,11 @@ public final class SqlMapper<TEntity> {
             try {
                 propertyMapping.map(entity, resultSet);
             } catch(Exception e) {
-                return new SqlMappingResult<TEntity>(new SqlMappingError(e));
+                return new SqlMappingResult<>(new SqlMappingError(e));
             }
         }
 
-        return new SqlMappingResult<TEntity>(entity);
+        return new SqlMappingResult<>(entity);
     }
 
     public Stream<SqlMappingResult<TEntity>> toStream(ResultSet resultSet) {

@@ -9,48 +9,35 @@ import de.bytefish.sqlmapper.mapping.IPropertyMapping;
 import de.bytefish.sqlmapper.mapping.PropertyMapping;
 import de.bytefish.sqlmapper.utils.StringUtils;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public abstract class AbstractMap<TEntity> {
+public abstract class ResultSetMapping<TEntity> {
 
-    private IValueHandlerProvider provider;
+    private IValueHandlerProvider valueHandlerProvider;
     private String schemaName;
     private String tableName;
 
     private List<IPropertyMapping<TEntity>> mappings;
 
-    public AbstractMap(String tableName) {
-        this("", tableName);
+    public ResultSetMapping() {
+        this(new ValueHandlerProvider());
     }
 
-    public AbstractMap(String schemaName, String tableName) {
-        this(new ValueHandlerProvider(), schemaName, tableName);
-    }
+    public ResultSetMapping(IValueHandlerProvider valueHandlerProvider) {
+        this.valueHandlerProvider = valueHandlerProvider;
 
-    public AbstractMap(IValueHandlerProvider valueHandlerProvider, String schemaName, String tableName) {
-        this.provider = valueHandlerProvider;
-        this.schemaName = schemaName;
-        this.tableName = tableName;
         this.mappings = new ArrayList<>();
     }
 
     protected <TProperty> void map(String columnName, Class<TProperty> type, BiConsumer<TEntity, TProperty> setter) {
-        IValueHandler<TProperty> handler = provider.resolve(type);
+        IValueHandler<TProperty> handler = valueHandlerProvider.resolve(type);
 
-        mappings.add(new PropertyMapping<TEntity, TProperty>(columnName, setter, handler));
+        mappings.add(new PropertyMapping<>(columnName, setter, handler));
     }
 
     public List<IPropertyMapping<TEntity>> getMappings() {
         return mappings;
-    }
-
-    public String getFullQualifiedTableName() {
-        if (StringUtils.isNullOrWhiteSpace(schemaName)) {
-            return tableName;
-        }
-        return String.format("%1$s.%2$s", schemaName, tableName);
     }
 }
