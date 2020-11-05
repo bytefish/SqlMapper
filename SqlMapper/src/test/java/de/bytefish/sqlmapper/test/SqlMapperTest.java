@@ -1,21 +1,18 @@
 // Copyright (c) Philipp Wagner. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-package de.bytefish.sqlmapper;
+package de.bytefish.sqlmapper.test;
 
-import de.bytefish.sqlmapper.iterator.ResultSetSpliterator;
+import de.bytefish.sqlmapper.AbstractMap;
+import de.bytefish.sqlmapper.SqlMapper;
 import de.bytefish.sqlmapper.result.SqlMappingResult;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-public class StreamingMapperTest extends TransactionalTestBase {
+public class SqlMapperTest extends TransactionalTestBase {
 
     private class Person {
 
@@ -70,10 +67,16 @@ public class StreamingMapperTest extends TransactionalTestBase {
 
     @Test
     public void testToEntity() throws Exception {
-
         SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
 
-        insert(1);
+        Person person0 = new Person();
+
+        person0.firstName = "Philipp";
+        person0.lastName = "Wagner";
+        person0.birthDate = LocalDate.of(1986, 5, 12);
+
+        insert(person0);
+
 
         ResultSet resultSet = selectAll();
         while (resultSet.next() ) {
@@ -86,24 +89,6 @@ public class StreamingMapperTest extends TransactionalTestBase {
             Assert.assertEquals("Wagner", person.getResult().getLastName());
             Assert.assertEquals(LocalDate.of(1986, 5, 12), person.getResult().getBirthDate());
         }
-    }
-
-    @Test
-    public void testToEntityStream() throws Exception {
-        // Number of persons to insert:
-        int numPersons = 10000;
-        // Insert the given number of persons:
-        insert(numPersons);
-        // Get all row of the Table:
-        ResultSet resultSet = selectAll();
-        // Create a SqlMapper, which maps between a ResultSet row and a Person entity:
-        SqlMapper<Person> sqlMapper = new SqlMapper<>(() -> new Person(), new PersonMap());
-        // Create the Stream using the StreamSupport class:
-        Stream<SqlMappingResult<Person>> stream = sqlMapper.toStream(resultSet);
-        // Collect the Results as a List:
-        List<SqlMappingResult<Person>> result = stream.collect(Collectors.toList());
-        // Assert the results:
-        Assert.assertEquals(numPersons, result.size());
     }
 
     private boolean createTable() throws SQLException {
@@ -124,18 +109,6 @@ public class StreamingMapperTest extends TransactionalTestBase {
         Statement stmt = connection.createStatement();
 
         return stmt.executeQuery("select * from sample.unit_test");
-    }
-
-    private void insert(int numPersons) throws SQLException {
-        Person person0 = new Person();
-
-        person0.firstName = "Philipp";
-        person0.lastName = "Wagner";
-        person0.birthDate = LocalDate.of(1986, 5, 12);
-
-        for(int i = 0; i < numPersons; i++) {
-            insert(person0);
-        }
     }
 
     private void insert(Person person) throws SQLException {

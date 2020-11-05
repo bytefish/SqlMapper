@@ -8,3 +8,5 @@
 /captures
 .iws
 workspace.xml
+*.iml
+.idea
