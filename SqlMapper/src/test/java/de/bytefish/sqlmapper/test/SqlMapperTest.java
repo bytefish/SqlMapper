@@ -52,8 +52,6 @@ public class SqlMapperTest extends TransactionalTestBase {
     public class PersonMap extends ResultSetMapping<Person>
     {
         public PersonMap() {
-            super();
-
             map("first_name", String.class, Person::setFirstName);
             map("last_name", String.class, Person::setLastName);
             map("birth_date", LocalDate.class, Person::setBirthDate);
