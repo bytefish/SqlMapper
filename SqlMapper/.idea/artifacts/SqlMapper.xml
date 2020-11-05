@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="SqlMapper">
-    <output-path>$PROJECT_DIR$/out/artifacts/SqlMapper</output-path>
-    <root id="archive" name="SqlMapper.jar">
-      <element id="module-output" name="SqlMapper" />
-    </root>
-  </artifact>
-</component>
